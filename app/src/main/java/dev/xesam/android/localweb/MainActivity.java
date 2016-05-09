@@ -1,8 +1,7 @@
 package dev.xesam.android.localweb;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.webkit.WebView;
 
 import butterknife.BindView;
@@ -24,12 +23,11 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.update)
     public void update() {
-
+        LocalWebManager.getInstance().update();
     }
 
     @OnClick(R.id.load)
     public void load() {
-        Log.e("load", "load");
         web.loadUrl("http://192.168.1.232/v2/index.html");
     }
 }

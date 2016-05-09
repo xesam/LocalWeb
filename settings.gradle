@@ -1,1 +1,1 @@
-include ':app', ':local-web'
+include ':app', ':local-web', ':local-web-interceptor'
