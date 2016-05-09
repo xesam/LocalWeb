@@ -1,1 +1,1 @@
-include ':app', ':ocal-web'
+include ':app', ':local-web'
