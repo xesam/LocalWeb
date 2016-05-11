@@ -5,4 +5,6 @@ package dev.xesam.android.localweb;
  */
 public interface ILocalWebManager {
     void update();
+
+    void update(LocalWebRequest request);
 }

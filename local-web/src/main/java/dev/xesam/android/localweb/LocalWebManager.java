@@ -38,8 +38,13 @@ public class LocalWebManager implements ILocalWebManager {
 
     @Override
     public void update() {
+        update(createRequest());
+    }
+
+    @Override
+    public void update(LocalWebRequest request) {
         Intent intent = new Intent(mContext, LocalWebService.class);
-        LocalWebHelper.putRequest(intent, createRequest());
+        LocalWebHelper.putRequest(intent, request);
         mContext.startService(intent);
     }
 }
