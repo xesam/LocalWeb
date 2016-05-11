@@ -3,7 +3,6 @@ package dev.xesam.android.localweb;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -17,7 +16,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dev.xesam.android.localweb.app.R;
-import dev.xesam.android.localweb.interceptor.FileInterceptRule;
 import dev.xesam.android.localweb.interceptor.LocalWebInterceptor;
 import dev.xesam.android.localweb.interceptor.LocalWebViewClient;
 
@@ -57,18 +55,20 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.load)
     public void load() {
-        LocalWebInterceptor localWebInterceptor = new LocalWebInterceptor(new FileInterceptRule() {
+//        LocalWebInterceptor localWebInterceptor = new LocalWebInterceptor(new FileInterceptRule() {
+//
+//            @Override
+//            protected String getFilePath(Context context, Uri uri) {
+//                String path = uri.getPath();
+//                Log.e("getFilePath:", path);
+//                if (path.startsWith("/")) {
+//                    path = path.substring(1);
+//                }
+//                return context.getExternalCacheDir() + "/" + "v1/" + path;
+//            }
+//        });
+        LocalWebInterceptor localWebInterceptor = new LocalWebInterceptor(new DynamicInterceptRule());
 
-            @Override
-            protected String getFilePath(Context context, Uri uri) {
-                String path = uri.getPath();
-                Log.e("getFilePath:", path);
-                if (path.startsWith("/")) {
-                    path = path.substring(1);
-                }
-                return context.getExternalCacheDir() + "/" + "v1/" + path;
-            }
-        });
         web.setWebViewClient(new LocalWebViewClient(localWebInterceptor));
         web.loadUrl("http://192.168.1.159/index.html?v=v1");
     }
