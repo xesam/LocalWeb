@@ -11,13 +11,26 @@ import java.util.HashMap;
 public class LocalWebRequest implements Parcelable {
 
     private String mVersion;
+    private String mUrl;
     private HashMap<String, String> optional;
 
     public LocalWebRequest() {
     }
 
     public String getVersion() {
-        return null;
+        return mVersion;
+    }
+
+    public void setVersion(String version) {
+        this.mVersion = version;
+    }
+
+    public String getUrl() {
+        return mUrl;
+    }
+
+    public void setUrl(String url) {
+        this.mUrl = url;
     }
 
     @Override
@@ -28,15 +41,17 @@ public class LocalWebRequest implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.mVersion);
+        dest.writeString(this.mUrl);
         dest.writeSerializable(this.optional);
     }
 
     protected LocalWebRequest(Parcel in) {
         this.mVersion = in.readString();
+        this.mUrl = in.readString();
         this.optional = (HashMap<String, String>) in.readSerializable();
     }
 
-    public static final Parcelable.Creator<LocalWebRequest> CREATOR = new Parcelable.Creator<LocalWebRequest>() {
+    public static final Creator<LocalWebRequest> CREATOR = new Creator<LocalWebRequest>() {
         @Override
         public LocalWebRequest createFromParcel(Parcel source) {
             return new LocalWebRequest(source);

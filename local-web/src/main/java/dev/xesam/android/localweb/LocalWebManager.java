@@ -30,7 +30,10 @@ public class LocalWebManager implements ILocalWebManager {
     }
 
     private LocalWebRequest createRequest() {
-        return null;
+        LocalWebRequest request = new LocalWebRequest();
+        request.setVersion("v1");
+        request.setUrl("http://192.168.1.159/v1.zip");
+        return request;
     }
 
     @Override

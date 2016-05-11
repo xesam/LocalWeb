@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onReceiveUpdated(Context context, Intent intent, LocalWebRequest request, Bundle responseReply) {
             Log.d("onReceiveUpdated", "get");
+            new LocalWebCache().scan(context);
         }
     };
 

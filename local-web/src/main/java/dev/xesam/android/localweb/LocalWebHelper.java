@@ -25,7 +25,7 @@ public class LocalWebHelper {
     }
 
     public static Bundle getResponseReply(Intent data) {
-        return data.getBundleExtra(INTENT_EXTRA_REQUEST);
+        return data.getBundleExtra(INTENT_EXTRA_RESPONSE_REPLY);
     }
 
     public static void setResponseReply(Intent data, Bundle responseReply) {
