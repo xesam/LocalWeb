@@ -13,17 +13,11 @@ import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.Charset;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dev.xesam.android.localweb.app.R;
-import dev.xesam.android.localweb.interceptor.LocalWebInterceptRule;
+import dev.xesam.android.localweb.interceptor.FileInterceptRule;
 import dev.xesam.android.localweb.interceptor.LocalWebInterceptor;
 import dev.xesam.android.localweb.interceptor.LocalWebViewClient;
 
@@ -63,24 +57,16 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.load)
     public void load() {
-        LocalWebInterceptor localWebInterceptor = new LocalWebInterceptor();
-        localWebInterceptor.addRule(new LocalWebInterceptRule() {
+        LocalWebInterceptor localWebInterceptor = new LocalWebInterceptor(new FileInterceptRule() {
+
             @Override
-            public WebResourceResponse shouldInterceptRequest(Context context, Uri uri) {
+            protected String getFilePath(Context context, Uri uri) {
                 String path = uri.getPath();
-                Log.e("should", path);
+                Log.e("getFilePath:", path);
                 if (path.startsWith("/")) {
                     path = path.substring(1);
                 }
-                try {
-                    InputStream inputStream = new FileInputStream(new File(context.getExternalCacheDir(), "v2/" + path));
-                    return new WebResourceResponse(null, Charset.defaultCharset().name(), inputStream);
-                } catch (IOException e) {
-                    if (LocalWebInterceptor.DEBUG) {
-                        Log.d("intercept not found", uri.toString());
-                    }
-                }
-                return null;
+                return context.getExternalCacheDir() + "/" + "v1/" + path;
             }
         });
         web.setWebViewClient(new LocalWebViewClient(localWebInterceptor));

@@ -18,10 +18,25 @@ public class LocalWebInterceptor {
 
     public static boolean DEBUG = false;
 
-    public List<LocalWebInterceptRule> rules = new LinkedList<>();
+    public List<LocalWebInterceptRule> mRules = new LinkedList<>();
+
+    public LocalWebInterceptor() {
+    }
+
+    public LocalWebInterceptor(LocalWebInterceptRule rule) {
+        addRule(rule);
+    }
+
+    public LocalWebInterceptor(List<LocalWebInterceptRule> rules) {
+        addRules(rules);
+    }
 
     public void addRule(LocalWebInterceptRule rule) {
-        rules.add(rule);
+        mRules.add(rule);
+    }
+
+    public void addRules(List<LocalWebInterceptRule> rules) {
+        mRules.addAll(rules);
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -29,10 +44,10 @@ public class LocalWebInterceptor {
         if (DEBUG) {
             Log.d("intercept", uri.toString());
         }
-        if (rules == null || rules.size() == 0) {
+        if (mRules == null || mRules.size() == 0) {
             return defaultResource;
         }
-        for (LocalWebInterceptRule rule : rules) {
+        for (LocalWebInterceptRule rule : mRules) {
             WebResourceResponse webResourceResponse = rule.shouldInterceptRequest(webview.getContext(), uri);
             if (webResourceResponse != null) {
                 return webResourceResponse;
