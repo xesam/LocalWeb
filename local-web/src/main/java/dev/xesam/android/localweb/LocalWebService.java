@@ -6,12 +6,18 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 /**
  * Created by xesamguo@gmail.com on 16-5-9.
@@ -72,7 +78,7 @@ public class LocalWebService extends IntentService {
                 byte[] buffer = new byte[8 * 1024]; // IO缓冲区:8KB
 
                 URL url = new URL(request.getUrl());
-                File file = new File(getCacheDir(), System.currentTimeMillis() + ".zip");
+                File file = new File(getExternalCacheDir(), request.getVersion() + ".zip");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
                 conn.setConnectTimeout(connectTimeout);
@@ -93,6 +99,32 @@ public class LocalWebService extends IntentService {
                 onUpdated(request, new Bundle());
                 in.close();
                 out.close();
+
+                ZipInputStream zis = new ZipInputStream(new FileInputStream(new File(getExternalCacheDir(), request.getVersion() + ".zip")));
+                BufferedOutputStream bos = null;
+                ZipEntry entry = null;
+                while ((entry = zis.getNextEntry()) != null) {
+                    if (entry.isDirectory()) {
+
+                    } else {
+                        File target = new File(file.getParent(), entry.getName());
+                        if (!target.getParentFile().exists()) {
+                            // 创建文件父目录
+                            target.getParentFile().mkdirs();
+                        }
+                        // 写入文件
+                        bos = new BufferedOutputStream(new FileOutputStream(target));
+                        int read;
+                        byte[] buffer2 = new byte[1024 * 10];
+                        while ((read = zis.read(buffer2, 0, buffer2.length)) != -1) {
+                            bos.write(buffer2, 0, read);
+                        }
+                        bos.flush();
+                    }
+                }
+                zis.closeEntry();
+
+
             } catch (Exception e) {
                 e.printStackTrace();
             }

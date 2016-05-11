@@ -10,7 +10,7 @@ import java.io.File;
  */
 public class LocalWebCache {
     public void scan(Context context) {
-        File dir = context.getCacheDir();
+        File dir = context.getExternalCacheDir();
         String[] files = dir.list();
         for (String file : files) {
             Log.e("LocalWebCache", String.valueOf(file));
