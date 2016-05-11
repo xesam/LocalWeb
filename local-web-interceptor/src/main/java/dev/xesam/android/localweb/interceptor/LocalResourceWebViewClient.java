@@ -24,17 +24,14 @@ public class LocalResourceWebViewClient extends WebViewClient {
     @Override
     public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
         WebResourceResponse defaultResource = super.shouldInterceptRequest(view, url);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            return defaultResource;
-        } else {
-            return mLocalResourceInterceptor.shouldInterceptRequest(view.getContext(), url, defaultResource);
-        }
+        //shouldInterceptRequest(WebView view, WebResourceRequest request) will delegate to this method,so,check!
+        return mLocalResourceInterceptor.shouldInterceptRequest(view, url, defaultResource);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
         WebResourceResponse defaultResource = super.shouldInterceptRequest(view, request);
-        return mLocalResourceInterceptor.shouldInterceptRequest(view.getContext(), request, defaultResource);
+        return mLocalResourceInterceptor.shouldInterceptRequest(view, request, defaultResource);
     }
 }

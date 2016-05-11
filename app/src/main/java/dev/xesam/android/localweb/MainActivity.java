@@ -1,13 +1,17 @@
 package dev.xesam.android.localweb;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -81,5 +85,22 @@ public class MainActivity extends AppCompatActivity {
         });
         web.setWebViewClient(new LocalResourceWebViewClient(localResourceInterceptor));
         web.loadUrl("http://192.168.1.159/index.html?v=v1");
+    }
+
+    public void test1() {
+        final LocalResourceInterceptor localResourceInterceptor = new LocalResourceInterceptor();
+        web.setWebViewClient(new WebViewClient() {
+            @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+            @Override
+            public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
+                return localResourceInterceptor.shouldInterceptRequest(view, url, super.shouldInterceptRequest(view, url));
+            }
+
+            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+            @Override
+            public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+                return localResourceInterceptor.shouldInterceptRequest(view, request, super.shouldInterceptRequest(view, request));
+            }
+        });
     }
 }
