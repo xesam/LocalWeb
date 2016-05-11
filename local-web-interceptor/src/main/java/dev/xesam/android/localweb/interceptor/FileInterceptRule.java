@@ -22,6 +22,10 @@ public abstract class FileInterceptRule implements LocalWebInterceptRule {
 
     private LocalWebFilter mLocalWebFilter;
 
+    public FileInterceptRule() {
+        this(null);
+    }
+
     public FileInterceptRule(LocalWebFilter localWebFilter) {
         this.mLocalWebFilter = localWebFilter;
     }
