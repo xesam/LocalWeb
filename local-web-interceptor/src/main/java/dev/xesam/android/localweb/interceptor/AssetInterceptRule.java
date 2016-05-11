@@ -17,9 +17,21 @@ import java.nio.charset.Charset;
  * Created by xesamguo@gmail.com on 16-5-11.
  */
 public abstract class AssetInterceptRule implements LocalWebInterceptRule {
+
+    private LocalWebFilter mLocalWebFilter;
+
+    public AssetInterceptRule(LocalWebFilter localWebFilter) {
+        this.mLocalWebFilter = localWebFilter;
+    }
+
     @Override
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public WebResourceResponse shouldInterceptRequest(Context context, Uri uri) {
+
+        if (mLocalWebFilter != null && mLocalWebFilter.filter(uri)) {
+            return null;
+        }
+
         String path = getAssetPath(context, uri);
         if (TextUtils.isEmpty(path)) {
             return null;

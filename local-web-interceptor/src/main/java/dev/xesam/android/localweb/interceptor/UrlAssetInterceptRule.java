@@ -18,16 +18,12 @@ public class UrlAssetInterceptRule extends AssetInterceptRule {
 
     private static final Pattern VERSION = Pattern.compile("(?:\\?|&)v=([^=]+)");
 
-    private String mTargetHost; // targetHost
-    private boolean mFilterHost = false;//need to filter host
-
     public UrlAssetInterceptRule() {
-        this(null, false);
+        super(null);
     }
 
-    public UrlAssetInterceptRule(String targetHost, boolean filterHost) {
-        this.mTargetHost = targetHost;
-        this.mFilterHost = filterHost;
+    public UrlAssetInterceptRule(LocalWebFilter localWebFilter) {
+        super(localWebFilter);
     }
 
     @Nullable
@@ -51,13 +47,6 @@ public class UrlAssetInterceptRule extends AssetInterceptRule {
     @Override
     protected String getAssetPath(Context context, Uri uri) {
         String host = uri.getHost();
-
-        if (mFilterHost && !TextUtils.isEmpty(mTargetHost)) {
-            if (!mTargetHost.equals(host)) {
-                return null;
-            }
-        }
-
         if (!TextUtils.isEmpty(host)) {
             String path = uri.getPath();
             String v = getVersion(uri);

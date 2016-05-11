@@ -19,9 +19,21 @@ import java.nio.charset.Charset;
  * Created by xesamguo@gmail.com on 16-5-11.
  */
 public abstract class FileInterceptRule implements LocalWebInterceptRule {
+
+    private LocalWebFilter mLocalWebFilter;
+
+    public FileInterceptRule(LocalWebFilter localWebFilter) {
+        this.mLocalWebFilter = localWebFilter;
+    }
+
     @Override
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public WebResourceResponse shouldInterceptRequest(Context context, Uri uri) {
+
+        if (mLocalWebFilter != null && mLocalWebFilter.filter(uri)) {
+            return null;
+        }
+
         String absPath = getFilePath(context, uri);
         if (TextUtils.isEmpty(absPath)) {
             return null;
