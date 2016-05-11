@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * Created by xesamguo@gmail.com on 16-4-18.
  */
-public class MapAssetInterceptRule implements LocalWebInterceptRule {
+public class MapAssetInterceptRule extends AssetInterceptRule {
     private Map<String, String> mapper = new HashMap<>();
 
     @Override
@@ -36,6 +36,15 @@ public class MapAssetInterceptRule implements LocalWebInterceptRule {
                     Log.d("intercept not found", uri.toString());
                 }
             }
+        }
+        return null;
+    }
+
+    @Override
+    protected String getAssetPath(Context context, Uri uri) {
+        String key = uri.toString();
+        if (mapper.containsKey(key)) {
+            return mapper.get(key);
         }
         return null;
     }
