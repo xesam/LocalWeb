@@ -23,9 +23,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dev.xesam.android.localweb.app.R;
-import dev.xesam.android.localweb.interceptor.InterceptRule;
-import dev.xesam.android.localweb.interceptor.LocalResourceInterceptor;
-import dev.xesam.android.localweb.interceptor.LocalResourceWebViewClient;
+import dev.xesam.android.localweb.interceptor.LocalWebInterceptRule;
+import dev.xesam.android.localweb.interceptor.LocalWebInterceptor;
+import dev.xesam.android.localweb.interceptor.LocalWebViewClient;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -63,8 +63,8 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.load)
     public void load() {
-        LocalResourceInterceptor localResourceInterceptor = new LocalResourceInterceptor();
-        localResourceInterceptor.addRule(new InterceptRule() {
+        LocalWebInterceptor localWebInterceptor = new LocalWebInterceptor();
+        localWebInterceptor.addRule(new LocalWebInterceptRule() {
             @Override
             public WebResourceResponse shouldInterceptRequest(Context context, Uri uri) {
                 String path = uri.getPath();
@@ -76,30 +76,30 @@ public class MainActivity extends AppCompatActivity {
                     InputStream inputStream = new FileInputStream(new File(context.getExternalCacheDir(), "v2/" + path));
                     return new WebResourceResponse(null, Charset.defaultCharset().name(), inputStream);
                 } catch (IOException e) {
-                    if (LocalResourceInterceptor.DEBUG) {
+                    if (LocalWebInterceptor.DEBUG) {
                         Log.d("intercept not found", uri.toString());
                     }
                 }
                 return null;
             }
         });
-        web.setWebViewClient(new LocalResourceWebViewClient(localResourceInterceptor));
+        web.setWebViewClient(new LocalWebViewClient(localWebInterceptor));
         web.loadUrl("http://192.168.1.159/index.html?v=v1");
     }
 
     public void test1() {
-        final LocalResourceInterceptor localResourceInterceptor = new LocalResourceInterceptor();
+        final LocalWebInterceptor localWebInterceptor = new LocalWebInterceptor();
         web.setWebViewClient(new WebViewClient() {
             @TargetApi(Build.VERSION_CODES.HONEYCOMB)
             @Override
             public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
-                return localResourceInterceptor.shouldInterceptRequest(view, url, super.shouldInterceptRequest(view, url));
+                return localWebInterceptor.shouldInterceptRequest(view, url, super.shouldInterceptRequest(view, url));
             }
 
             @TargetApi(Build.VERSION_CODES.LOLLIPOP)
             @Override
             public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
-                return localResourceInterceptor.shouldInterceptRequest(view, request, super.shouldInterceptRequest(view, request));
+                return localWebInterceptor.shouldInterceptRequest(view, request, super.shouldInterceptRequest(view, request));
             }
         });
     }

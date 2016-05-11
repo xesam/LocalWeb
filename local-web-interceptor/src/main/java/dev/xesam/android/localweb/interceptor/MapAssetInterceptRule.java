@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * Created by xesamguo@gmail.com on 16-4-18.
  */
-public class MapAssetInterceptRule implements InterceptRule {
+public class MapAssetInterceptRule implements LocalWebInterceptRule {
     private Map<String, String> mapper = new HashMap<>();
 
     @Override
@@ -27,12 +27,12 @@ public class MapAssetInterceptRule implements InterceptRule {
             String path = mapper.get(key);
             try {
                 InputStream inputStream = context.getAssets().open(path);
-                if (LocalResourceInterceptor.DEBUG) {
+                if (LocalWebInterceptor.DEBUG) {
                     Log.d("intercept hit", uri.toString() + " --> " + path);
                 }
                 return new WebResourceResponse(null, Charset.defaultCharset().name(), inputStream);
             } catch (IOException e) {
-                if (LocalResourceInterceptor.DEBUG) {
+                if (LocalWebInterceptor.DEBUG) {
                     Log.d("intercept not found", uri.toString());
                 }
             }

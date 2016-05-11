@@ -12,12 +12,12 @@ import android.webkit.WebViewClient;
  * a helper client
  * Created by xesamguo@gmail.com on 16-4-19.
  */
-public class LocalResourceWebViewClient extends WebViewClient {
+public class LocalWebViewClient extends WebViewClient {
 
-    private LocalResourceInterceptor mLocalResourceInterceptor;
+    private LocalWebInterceptor mLocalWebInterceptor;
 
-    public LocalResourceWebViewClient(@NonNull LocalResourceInterceptor localResourceInterceptor) {
-        mLocalResourceInterceptor = localResourceInterceptor;
+    public LocalWebViewClient(@NonNull LocalWebInterceptor localWebInterceptor) {
+        mLocalWebInterceptor = localWebInterceptor;
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -25,13 +25,13 @@ public class LocalResourceWebViewClient extends WebViewClient {
     public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
         WebResourceResponse defaultResource = super.shouldInterceptRequest(view, url);
         //shouldInterceptRequest(WebView view, WebResourceRequest request) will delegate to this method,so,check!
-        return mLocalResourceInterceptor.shouldInterceptRequest(view, url, defaultResource);
+        return mLocalWebInterceptor.shouldInterceptRequest(view, url, defaultResource);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
         WebResourceResponse defaultResource = super.shouldInterceptRequest(view, request);
-        return mLocalResourceInterceptor.shouldInterceptRequest(view, request, defaultResource);
+        return mLocalWebInterceptor.shouldInterceptRequest(view, request, defaultResource);
     }
 }

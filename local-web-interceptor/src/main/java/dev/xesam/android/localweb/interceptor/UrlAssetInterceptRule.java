@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
 /**
  * Created by xesamguo@gmail.com on 16-4-18.
  */
-public class UrlAssetInterceptRule implements InterceptRule {
+public class UrlAssetInterceptRule implements LocalWebInterceptRule {
 
     public static final String SEP = "/";
 
@@ -63,12 +63,12 @@ public class UrlAssetInterceptRule implements InterceptRule {
                     }
                 }
                 InputStream inputStream = context.getAssets().open(path);
-                if (LocalResourceInterceptor.DEBUG) {
+                if (LocalWebInterceptor.DEBUG) {
                     Log.d("intercept hit", uri.toString() + " --> " + path);
                 }
                 return new WebResourceResponse(null, Charset.defaultCharset().name(), inputStream);
             } catch (IOException e) {
-                if (LocalResourceInterceptor.DEBUG) {
+                if (LocalWebInterceptor.DEBUG) {
                     Log.d("intercept not found", uri.toString());
                 }
             }
