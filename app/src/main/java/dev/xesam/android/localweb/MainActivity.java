@@ -1,7 +1,10 @@
 package dev.xesam.android.localweb;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.webkit.WebView;
 
 import butterknife.BindView;
@@ -14,6 +17,13 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.web)
     public WebView web;
 
+    LocalWebReceiver localWebReceiver = new LocalWebReceiver() {
+        @Override
+        protected void onReceiveUpdated(Context context, Intent intent, LocalWebRequest request, Bundle responseReply) {
+            Log.d("onReceiveUpdated", "get");
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,6 +31,13 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         LocalWebManager.init(this);
         LocalWebManager.DEBUG = true;
+        localWebReceiver.register(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        localWebReceiver.unregister(this);
     }
 
     @OnClick(R.id.update)

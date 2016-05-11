@@ -2,6 +2,7 @@ package dev.xesam.android.localweb;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -49,12 +50,13 @@ public class LocalWebService extends IntentService {
         }
         try {
             Thread.sleep(1000);
+            onUpdated(request, new Bundle());
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
-    protected void onUpdated() {
-
+    protected void onUpdated(LocalWebRequest request, Bundle responseReply) {
+        LocalWebHelper.broadcastUpdated(this, request, responseReply);
     }
 }
