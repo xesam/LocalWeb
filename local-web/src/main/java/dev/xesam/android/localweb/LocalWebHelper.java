@@ -12,15 +12,15 @@ public class LocalWebHelper {
     public static final String INTENT_EXTRA_REQUEST = "localweb.extra.request";
     public static final String INTENT_EXTRA_RESPONSE_REPLY = "localweb.extra.response_reply";
 
-    public static void putRequest(Intent data, LocalWebRequest localWebRequest) {
-        data.putExtra(INTENT_EXTRA_REQUEST, localWebRequest);
+    public static void putRequest(Intent data, LocalWebParam localWebParam) {
+        data.putExtra(INTENT_EXTRA_REQUEST, localWebParam);
     }
 
-    public static LocalWebRequest getRequest(Intent data) {
+    public static LocalWebParam getRequest(Intent data) {
         return data.getParcelableExtra(INTENT_EXTRA_REQUEST);
     }
 
-    public static void setRequest(Intent data, LocalWebRequest request) {
+    public static void setRequest(Intent data, LocalWebParam request) {
         data.putExtra(INTENT_EXTRA_REQUEST, request);
     }
 
@@ -32,7 +32,7 @@ public class LocalWebHelper {
         data.putExtra(INTENT_EXTRA_RESPONSE_REPLY, responseReply);
     }
 
-    public static void broadcastUpdated(Context context, LocalWebRequest request, Bundle responseReply) {
+    public static void broadcastUpdated(Context context, LocalWebParam request, Bundle responseReply) {
         Intent intent = new Intent(LocalWebReceiver.ACTION_LOCAL_WEB_UPDATED);
         setRequest(intent, request);
         setResponseReply(intent, responseReply);

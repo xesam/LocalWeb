@@ -29,7 +29,7 @@ public class LocalWebManager {
         this.mContext = context;
     }
 
-    private LocalWebRequest createDefaultRequest() {
+    private LocalWebParam createDefaultRequest() {
         return null;
     }
 
@@ -37,7 +37,7 @@ public class LocalWebManager {
         update(createDefaultRequest());
     }
 
-    public void update(LocalWebRequest request) {
+    public void update(LocalWebParam request) {
         Intent intent = new Intent(mContext, LocalWebService.class);
         LocalWebHelper.putRequest(intent, request);
         mContext.startService(intent);

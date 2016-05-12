@@ -34,7 +34,7 @@ public class LocalWebService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        LocalWebRequest request = LocalWebHelper.getRequest(intent);
+        LocalWebParam request = LocalWebHelper.getRequest(intent);
         onHandleRequest(request);
     }
 
@@ -46,7 +46,7 @@ public class LocalWebService extends IntentService {
         }
     }
 
-    protected void onHandleRequest(LocalWebRequest request) {
+    protected void onHandleRequest(LocalWebParam request) {
         if (LocalWebManager.DEBUG) {
             Log.d(TAG, "handle intent:" + (request == null ? "null" : (request.getVersion() + ":" + request.getUrl())));
         }
@@ -59,7 +59,11 @@ public class LocalWebService extends IntentService {
         onUpdated(request, new Bundle());
     }
 
-    protected void onUpdated(LocalWebRequest request, Bundle responseReply) {
+    protected void checkUpdate() {
+
+    }
+
+    protected void onUpdated(LocalWebParam request, Bundle responseReply) {
         LocalWebHelper.broadcastUpdated(this, request, responseReply);
     }
 }

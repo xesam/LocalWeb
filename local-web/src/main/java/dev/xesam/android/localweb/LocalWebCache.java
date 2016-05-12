@@ -26,7 +26,7 @@ public class LocalWebCache {
         return context.getExternalCacheDir();
     }
 
-    private File getDestFile(Context context, LocalWebRequest request) {
+    private File getDestFile(Context context, LocalWebParam request) {
         return new File(getCacheDir(context), request.getVersion() + ".zip");
     }
 
@@ -38,7 +38,7 @@ public class LocalWebCache {
         }
     }
 
-    public void sync(Context context, LocalWebRequest request) {
+    public void sync(Context context, LocalWebParam request) {
         BufferedInputStream bis = null;
         BufferedOutputStream bos = null;
         try {
@@ -78,7 +78,7 @@ public class LocalWebCache {
         }
     }
 
-    public void process(Context context, LocalWebRequest request, File zipFile) {
+    public void process(Context context, LocalWebParam request, File zipFile) {
         BufferedOutputStream bos = null;
         try {
             ZipInputStream zis = new ZipInputStream(new FileInputStream(zipFile));

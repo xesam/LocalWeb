@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
     LocalWebReceiver localWebReceiver = new LocalWebReceiver() {
         @Override
-        protected void onReceiveUpdated(Context context, Intent intent, LocalWebRequest request, Bundle responseReply) {
+        protected void onReceiveUpdated(Context context, Intent intent, LocalWebParam request, Bundle responseReply) {
             Log.d("onReceiveUpdated", "get");
             new LocalWebCache().scan(context);
         }
@@ -48,8 +48,8 @@ public class MainActivity extends AppCompatActivity {
         localWebReceiver.unregister(this);
     }
 
-    private LocalWebRequest createRequest() {
-        LocalWebRequest request = new LocalWebRequest();
+    private LocalWebParam createRequest() {
+        LocalWebParam request = new LocalWebParam();
         request.setVersion("v1");
         request.setUrl("http://192.168.1.159/v1.zip");
         return request;

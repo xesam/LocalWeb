@@ -8,13 +8,13 @@ import java.util.HashMap;
 /**
  * Created by xesamguo@gmail.com on 16-5-9.
  */
-public class LocalWebRequest implements Parcelable {
+public class LocalWebParam implements Parcelable {
 
     private String mVersion;
     private String mUrl;
     private HashMap<String, String> optional;
 
-    public LocalWebRequest() {
+    public LocalWebParam() {
     }
 
     public String getVersion() {
@@ -45,21 +45,21 @@ public class LocalWebRequest implements Parcelable {
         dest.writeSerializable(this.optional);
     }
 
-    protected LocalWebRequest(Parcel in) {
+    protected LocalWebParam(Parcel in) {
         this.mVersion = in.readString();
         this.mUrl = in.readString();
         this.optional = (HashMap<String, String>) in.readSerializable();
     }
 
-    public static final Creator<LocalWebRequest> CREATOR = new Creator<LocalWebRequest>() {
+    public static final Creator<LocalWebParam> CREATOR = new Creator<LocalWebParam>() {
         @Override
-        public LocalWebRequest createFromParcel(Parcel source) {
-            return new LocalWebRequest(source);
+        public LocalWebParam createFromParcel(Parcel source) {
+            return new LocalWebParam(source);
         }
 
         @Override
-        public LocalWebRequest[] newArray(int size) {
-            return new LocalWebRequest[size];
+        public LocalWebParam[] newArray(int size) {
+            return new LocalWebParam[size];
         }
     };
 }

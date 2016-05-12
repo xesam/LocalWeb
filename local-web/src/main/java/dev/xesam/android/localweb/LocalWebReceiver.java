@@ -33,7 +33,7 @@ public class LocalWebReceiver extends BroadcastReceiver {
         }
     }
 
-    protected void onReceiveUpdated(Context context, Intent intent, LocalWebRequest request, Bundle responseReply) {
+    protected void onReceiveUpdated(Context context, Intent intent, LocalWebParam request, Bundle responseReply) {
 
     }
 
