@@ -40,15 +40,15 @@ public class LocalWebInterceptor {
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    protected WebResourceResponse shouldInterceptRequest(WebView webview, Uri uri, WebResourceResponse defaultResource) {
+    protected WebResourceResponse shouldInterceptRequest(WebView webview, LocalWebRequest localWebRequest, WebResourceResponse defaultResource) {
         if (DEBUG) {
-            Log.d("intercept", uri.toString());
+            Log.d("intercept", localWebRequest.toString());
         }
         if (mRules == null || mRules.size() == 0) {
             return defaultResource;
         }
         for (LocalWebInterceptRule rule : mRules) {
-            WebResourceResponse webResourceResponse = rule.shouldInterceptRequest(webview.getContext(), uri);
+            WebResourceResponse webResourceResponse = rule.shouldInterceptRequest(webview.getContext(), localWebRequest);
             if (webResourceResponse != null) {
                 return webResourceResponse;
             }
@@ -61,12 +61,14 @@ public class LocalWebInterceptor {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             return defaultResource;
         } else {
-            return shouldInterceptRequest(webview, Uri.parse(url), defaultResource);
+            LocalWebRequest localWebRequest = new LocalWebRequest(Uri.parse(url));
+            return shouldInterceptRequest(webview, localWebRequest, defaultResource);
         }
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public WebResourceResponse shouldInterceptRequest(WebView webview, WebResourceRequest request, WebResourceResponse defaultResource) {
-        return shouldInterceptRequest(webview, request.getUrl(), defaultResource);
+        LocalWebRequest localWebRequest = new LocalWebRequest(request);
+        return shouldInterceptRequest(webview, localWebRequest, defaultResource);
     }
 }

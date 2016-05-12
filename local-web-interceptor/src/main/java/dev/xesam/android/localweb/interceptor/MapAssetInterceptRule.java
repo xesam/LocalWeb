@@ -21,7 +21,8 @@ public class MapAssetInterceptRule extends AssetInterceptRule {
     }
 
     @Override
-    protected String getAssetPath(Context context, Uri uri) {
+    protected String getAssetPath(Context context, LocalWebRequest request) {
+        Uri uri = request.getUrl();
         String key = uri.toString();
         if (mapper.containsKey(key)) {
             return mapper.get(key);

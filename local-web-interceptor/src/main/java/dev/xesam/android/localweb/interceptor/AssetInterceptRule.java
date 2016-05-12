@@ -2,7 +2,6 @@ package dev.xesam.android.localweb.interceptor;
 
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
@@ -26,29 +25,29 @@ public abstract class AssetInterceptRule implements LocalWebInterceptRule {
 
     @Override
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public WebResourceResponse shouldInterceptRequest(Context context, Uri uri) {
+    public WebResourceResponse shouldInterceptRequest(Context context, LocalWebRequest request) {
 
-        if (mLocalWebFilter != null && mLocalWebFilter.filter(uri)) {
+        if (mLocalWebFilter != null && mLocalWebFilter.filter(request)) {
             return null;
         }
 
-        String path = getAssetPath(context, uri);
+        String path = getAssetPath(context, request);
         if (TextUtils.isEmpty(path)) {
             return null;
         }
         try {
             InputStream inputStream = context.getAssets().open(path);
             if (LocalWebInterceptor.DEBUG) {
-                Log.d("intercept hit", uri.toString() + " --> " + path);
+                Log.d("intercept hit", request.toString() + " --> " + path);
             }
             return new WebResourceResponse(null, Charset.defaultCharset().name(), inputStream);
         } catch (IOException e) {
             if (LocalWebInterceptor.DEBUG) {
-                Log.d("intercept not found", uri.toString());
+                Log.d("intercept not found", request.toString());
             }
         }
         return null;
     }
 
-    protected abstract String getAssetPath(Context context, Uri uri);
+    protected abstract String getAssetPath(Context context, LocalWebRequest request);
 }
