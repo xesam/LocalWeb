@@ -48,9 +48,16 @@ public class MainActivity extends AppCompatActivity {
         localWebReceiver.unregister(this);
     }
 
+    private LocalWebRequest createRequest() {
+        LocalWebRequest request = new LocalWebRequest();
+        request.setVersion("v1");
+        request.setUrl("http://192.168.1.159/v1.zip");
+        return request;
+    }
+
     @OnClick(R.id.update)
     public void update() {
-        LocalWebManager.getInstance().update();
+        LocalWebManager.getInstance().update(createRequest());
     }
 
     @OnClick(R.id.load)

@@ -6,17 +6,17 @@ import android.content.Intent;
 /**
  * Created by xesamguo@gmail.com on 16-5-9.
  */
-public class LocalWebManager implements ILocalWebManager {
+public class LocalWebManager {
 
     public static boolean DEBUG = false;
     private static Context sContext;
-    private static ILocalWebManager webManager;
+    private static LocalWebManager webManager;
 
     public static void init(Context context) {
         sContext = context.getApplicationContext();
     }
 
-    public static ILocalWebManager getInstance() {
+    public static LocalWebManager getInstance() {
         if (webManager == null) {
             webManager = new LocalWebManager(sContext);
         }
@@ -29,19 +29,14 @@ public class LocalWebManager implements ILocalWebManager {
         this.mContext = context;
     }
 
-    private LocalWebRequest createRequest() {
-        LocalWebRequest request = new LocalWebRequest();
-        request.setVersion("v1");
-        request.setUrl("http://192.168.1.159/v1.zip");
-        return request;
+    private LocalWebRequest createDefaultRequest() {
+        return null;
     }
 
-    @Override
     public void update() {
-        update(createRequest());
+        update(createDefaultRequest());
     }
 
-    @Override
     public void update(LocalWebRequest request) {
         Intent intent = new Intent(mContext, LocalWebService.class);
         LocalWebHelper.putRequest(intent, request);
