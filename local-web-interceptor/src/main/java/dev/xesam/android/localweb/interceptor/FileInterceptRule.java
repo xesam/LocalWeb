@@ -33,7 +33,7 @@ public abstract class FileInterceptRule implements LocalWebInterceptRule {
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public WebResourceResponse shouldInterceptRequest(Context context, LocalWebRequest request) {
 
-        if (mLocalWebFilter != null && mLocalWebFilter.filter(request)) {
+        if (mLocalWebFilter != null && !mLocalWebFilter.intercept(request)) {
             return null;
         }
 
