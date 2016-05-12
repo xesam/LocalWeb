@@ -8,5 +8,5 @@ import android.webkit.WebResourceResponse;
  * Created by xesamguo@gmail.com on 16-4-18.
  */
 public interface LocalWebInterceptRule {
-    WebResourceResponse shouldInterceptRequest(Context context, LocalWebRequest request);
+    WebResourceResponse shouldInterceptRequest(Context context, LocalWebInterceptRequest request);
 }

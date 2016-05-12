@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 /**
  * Created by xesamguo@gmail.com on 16-5-9.
  */
-public class LocalWebRequest {
+public class LocalWebInterceptRequest {
 
     private static final Pattern VERSION = Pattern.compile("(?:\\?|&)v=([^=]+)");
 
@@ -38,17 +38,17 @@ public class LocalWebRequest {
     private String mVersion;
     private Uri mUri;
 
-    public LocalWebRequest(Uri uri) {
+    public LocalWebInterceptRequest(Uri uri) {
         this(getVersion(uri), uri);
     }
 
-    public LocalWebRequest(String version, Uri uri) {
+    public LocalWebInterceptRequest(String version, Uri uri) {
         this.mVersion = version;
         this.mUri = uri;
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public LocalWebRequest(WebResourceRequest request) {
+    public LocalWebInterceptRequest(WebResourceRequest request) {
         this(request.getUrl());
     }
 
@@ -62,7 +62,7 @@ public class LocalWebRequest {
 
     @Override
     public String toString() {
-        return "LocalWebRequest{" +
+        return "LocalWebInterceptRequest{" +
                 "mVersion='" + mVersion + '\'' +
                 ", mUri=" + mUri +
                 '}';

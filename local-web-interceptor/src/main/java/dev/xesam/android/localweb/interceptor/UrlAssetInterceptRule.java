@@ -20,7 +20,7 @@ public class UrlAssetInterceptRule extends AssetInterceptRule {
     }
 
     @Override
-    protected String getAssetPath(Context context, LocalWebRequest request) {
+    protected String getAssetPath(Context context, LocalWebInterceptRequest request) {
         Uri uri = request.getUrl();
         String path = uri.getPath();
         String version = request.getVersion();

@@ -8,5 +8,5 @@ public interface LocalWebFilter {
      * true : intercept
      * false : don't intercept
      */
-    boolean intercept(LocalWebRequest request);
+    boolean intercept(LocalWebInterceptRequest request);
 }
