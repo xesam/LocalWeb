@@ -3,7 +3,6 @@ package dev.xesam.android.localweb.interceptor;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
-import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.WebResourceResponse;
 
@@ -37,14 +36,14 @@ public abstract class FileInterceptRule implements LocalWebInterceptRule {
             return null;
         }
 
-        String absPath = getFilePath(context, request);
-        if (TextUtils.isEmpty(absPath)) {
+        File file = getFile(context, request);
+        if (file == null) {
             return null;
         }
         try {
-            InputStream inputStream = new FileInputStream(new File(absPath));
+            InputStream inputStream = new FileInputStream(file);
             if (LocalWebInterceptor.DEBUG) {
-                Log.d("intercept hit", request.toString() + " --> " + absPath);
+                Log.d("intercept hit", request.toString() + " --> " + file.getAbsolutePath());
             }
             return new WebResourceResponse(null, Charset.defaultCharset().name(), inputStream);
         } catch (IOException e) {
@@ -55,5 +54,5 @@ public abstract class FileInterceptRule implements LocalWebInterceptRule {
         return null;
     }
 
-    protected abstract String getFilePath(Context context, LocalWebInterceptRequest request);
+    protected abstract File getFile(Context context, LocalWebInterceptRequest request);
 }

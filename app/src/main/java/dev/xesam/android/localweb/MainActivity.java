@@ -55,20 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.load)
     public void load() {
-//        LocalWebInterceptor localWebInterceptor = new LocalWebInterceptor(new FileInterceptRule() {
-//
-//            @Override
-//            protected String getFilePath(Context context, Uri uri) {
-//                String path = uri.getPath();
-//                Log.e("getFilePath:", path);
-//                if (path.startsWith("/")) {
-//                    path = path.substring(1);
-//                }
-//                return context.getExternalCacheDir() + "/" + "v1/" + path;
-//            }
-//        });
         LocalWebInterceptor localWebInterceptor = new LocalWebInterceptor(new DynamicInterceptRule());
-
         web.setWebViewClient(new LocalWebViewClient(localWebInterceptor));
         web.loadUrl("http://192.168.1.159/index.html?v=v1");
     }

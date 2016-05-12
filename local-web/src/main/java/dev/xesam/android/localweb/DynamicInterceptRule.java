@@ -1,6 +1,9 @@
 package dev.xesam.android.localweb;
 
 import android.content.Context;
+import android.net.Uri;
+
+import java.io.File;
 
 import dev.xesam.android.localweb.interceptor.FileInterceptRule;
 import dev.xesam.android.localweb.interceptor.LocalWebInterceptRequest;
@@ -11,7 +14,12 @@ import dev.xesam.android.localweb.interceptor.LocalWebInterceptRequest;
 public class DynamicInterceptRule extends FileInterceptRule {
 
     @Override
-    protected String getFilePath(Context context, LocalWebInterceptRequest request) {
-        return null;
+    protected File getFile(Context context, LocalWebInterceptRequest request) {
+        Uri uri = request.getUrl();
+        String path = uri.getPath();
+        if (path.startsWith("/")) {
+            path = path.substring(1);
+        }
+        return new File(context.getExternalCacheDir(), "v1/" + path);
     }
 }
