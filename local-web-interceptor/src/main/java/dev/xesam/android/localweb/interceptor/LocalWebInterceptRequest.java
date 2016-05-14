@@ -15,10 +15,10 @@ import java.util.regex.Pattern;
  */
 public class LocalWebInterceptRequest {
 
-    private static final Pattern VERSION = Pattern.compile("(?:\\?|&)v=([^=]+)");
+    private static final Pattern PATTERN_TAG = Pattern.compile("(?:\\?|&)tag=([^=]+)");
 
     @Nullable
-    public static String getVersion(Uri uri) {
+    public static String getTag(Uri uri) {
         String query = uri.getQuery();
         if (TextUtils.isEmpty(query)) {
             return null;
@@ -26,7 +26,7 @@ public class LocalWebInterceptRequest {
         if (!query.startsWith("?")) {
             query = "?" + query;
         }
-        Matcher matcher = VERSION.matcher(query);
+        Matcher matcher = PATTERN_TAG.matcher(query);
         if (matcher.find()) {
             if (matcher.groupCount() == 1) {
                 return matcher.group(1);
@@ -35,15 +35,15 @@ public class LocalWebInterceptRequest {
         return null;
     }
 
-    private String mVersion;
+    private String mTag;
     private Uri mUri;
 
     public LocalWebInterceptRequest(Uri uri) {
-        this(getVersion(uri), uri);
+        this(getTag(uri), uri);
     }
 
     public LocalWebInterceptRequest(String version, Uri uri) {
-        this.mVersion = version;
+        this.mTag = version;
         this.mUri = uri;
     }
 
@@ -52,8 +52,8 @@ public class LocalWebInterceptRequest {
         this(request.getUrl());
     }
 
-    public String getVersion() {
-        return mVersion;
+    public String getTag() {
+        return mTag;
     }
 
     public Uri getUrl() {
@@ -63,7 +63,7 @@ public class LocalWebInterceptRequest {
     @Override
     public String toString() {
         return "LocalWebInterceptRequest{" +
-                "mVersion='" + mVersion + '\'' +
+                "mTag='" + mTag + '\'' +
                 ", mUri=" + mUri +
                 '}';
     }

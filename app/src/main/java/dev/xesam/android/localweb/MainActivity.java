@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
     public void load() {
         LocalWebInterceptor localWebInterceptor = new LocalWebInterceptor(new DynamicInterceptRule());
         web.setWebViewClient(new LocalWebViewClient(localWebInterceptor));
-        web.loadUrl("http://192.168.1.159/index.html?v=v1");
+        web.loadUrl("http://192.168.1.159/index.html?tag=v1");
     }
 
     public void test1() {

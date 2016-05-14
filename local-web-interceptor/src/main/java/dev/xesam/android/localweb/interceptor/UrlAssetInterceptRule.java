@@ -23,7 +23,7 @@ public class UrlAssetInterceptRule extends AssetInterceptRule {
     protected String getAssetPath(Context context, LocalWebInterceptRequest request) {
         Uri uri = request.getUrl();
         String path = uri.getPath();
-        String version = request.getVersion();
+        String version = request.getTag();
         if (TextUtils.isEmpty(version)) {
             if (path.startsWith(SEP)) {
                 path = path.substring(1);

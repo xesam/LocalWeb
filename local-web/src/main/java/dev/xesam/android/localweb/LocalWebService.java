@@ -48,7 +48,7 @@ public class LocalWebService extends IntentService {
 
     protected void onHandleRequest(LocalWebParam request) {
         if (LocalWebManager.DEBUG) {
-            Log.d(TAG, "handle intent:" + (request == null ? "null" : (request.getVersion() + ":" + request.getUrl())));
+            Log.d(TAG, "handle intent:" + (request == null ? "null" : (request.getTag() + ":" + request.getUrl())));
         }
 
         if (request == null) {

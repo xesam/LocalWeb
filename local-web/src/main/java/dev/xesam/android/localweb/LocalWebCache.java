@@ -27,7 +27,7 @@ public class LocalWebCache {
     }
 
     private File getDestFile(Context context, LocalWebParam request) {
-        return new File(getCacheDir(context), request.getVersion() + ".zip");
+        return new File(getCacheDir(context), request.getTag() + ".zip");
     }
 
     public void scan(Context context) {
