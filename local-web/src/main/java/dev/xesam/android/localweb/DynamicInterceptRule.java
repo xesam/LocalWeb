@@ -14,15 +14,15 @@ import dev.xesam.android.localweb.interceptor.LocalWebInterceptRequest;
  */
 public class DynamicInterceptRule extends FileInterceptRule {
 
-    private LocalWebCache mLocalWebCache;
+    private LocalWebManager mLocalWebManager;
 
-    public DynamicInterceptRule(LocalWebCache localWebCache) {
-        this(null, localWebCache);
+    public DynamicInterceptRule(LocalWebManager localWebManager) {
+        this(null, localWebManager);
     }
 
-    public DynamicInterceptRule(LocalWebFilter localWebFilter, LocalWebCache localWebCache) {
+    public DynamicInterceptRule(LocalWebFilter localWebFilter, LocalWebManager localWebManager) {
         super(localWebFilter);
-        this.mLocalWebCache = localWebCache;
+        this.mLocalWebManager = localWebManager;
     }
 
     @Override
@@ -32,6 +32,6 @@ public class DynamicInterceptRule extends FileInterceptRule {
         if (path.startsWith("/")) {
             path = path.substring(1);
         }
-        return new File(mLocalWebCache.getCacheDir(), request.getTag() + File.separator + path);
+        return new File(mLocalWebManager.getCacheDir(), request.getTag() + File.separator + path);
     }
 }

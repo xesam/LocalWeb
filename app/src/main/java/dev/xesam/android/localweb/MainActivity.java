@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onReceiveUpdated(Context context, Intent intent, LocalWebParam request, Bundle responseReply) {
             Log.d("onReceiveUpdated", "get");
-            new LocalWebCache(context).scan();
+            LocalWebManager.getInstance().scan();
         }
     };
 
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.load)
     public void load() {
-        LocalWebInterceptor localWebInterceptor = new LocalWebInterceptor(new DynamicInterceptRule(new LocalWebCache(this)));
+        LocalWebInterceptor localWebInterceptor = new LocalWebInterceptor(new DynamicInterceptRule(LocalWebManager.getInstance()));
         web.setWebViewClient(new LocalWebViewClient(localWebInterceptor));
         web.loadUrl("http://xesam.github.io/html/3_0.html?tag=v2");
     }
