@@ -30,7 +30,7 @@ public class LocalWebManager {
 
     private LocalWebManager(Context context) {
         this.mContext = context;
-        localWebCache = new LocalWebCache(mContext);
+        localWebCache = new LocalWebCache();
     }
 
     private LocalWebParam createDefaultRequest() {
@@ -49,10 +49,10 @@ public class LocalWebManager {
     }
 
     public void scan() {
-        localWebCache.scan();
+        localWebCache.scan(mContext);
     }
 
     public File getCacheDir() {
-        return mContext.getExternalCacheDir();
+        return localWebCache.getCacheDir(mContext);
     }
 }

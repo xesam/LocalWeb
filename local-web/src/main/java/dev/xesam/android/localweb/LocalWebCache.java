@@ -1,6 +1,7 @@
 package dev.xesam.android.localweb;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
 
 import java.io.BufferedInputStream;
@@ -22,33 +23,27 @@ public class LocalWebCache {
     public static final int CONNECT_TIME_OUT = 30 * 1000;
     public static final int READ_TIME_OUT = 2 * 60 * 1000;
 
-    private Context mContext;
-
-    public LocalWebCache(Context context) {
-        this.mContext = context.getApplicationContext();
+    File getCacheDir(Context context) {
+        return context.getExternalCacheDir();
     }
 
-    File getCacheDir() {
-        return mContext.getExternalCacheDir();
+    private File getDestFile(Context context, LocalWebResp resp) {
+        return new File(getCacheDir(context), resp.getTag() + ".zip");
     }
 
-    private File getDestFile(LocalWebResp resp) {
-        return new File(getCacheDir(), resp.getTag() + ".zip");
-    }
-
-    public void scan() {
-        File dir = getCacheDir();
+    public void scan(Context context) {
+        File dir = getCacheDir(context);
         String[] files = dir.list();
         for (String file : files) {
             Log.e("LocalWebCache scan", String.valueOf(file));
         }
     }
 
-    public void syncUpdate(Context context, LocalWebResp resp) {
+    public Bundle syncUpdate(Context context, LocalWebResp resp) {
         BufferedInputStream bis = null;
         BufferedOutputStream bos = null;
         try {
-            File dest = getDestFile(resp);
+            File dest = getDestFile(context, resp);
             URL url = new URL(resp.getUrl());
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setConnectTimeout(CONNECT_TIME_OUT);
@@ -63,7 +58,7 @@ public class LocalWebCache {
             }
             bis.close();
             bos.close();
-            process(context, resp, new File(dest.getAbsolutePath()));
+            process(new File(dest.getAbsolutePath()));
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -82,17 +77,16 @@ public class LocalWebCache {
                 }
             }
         }
+        return null;
     }
 
-    public void process(Context context, LocalWebResp resp, File zipFile) {
+    private void process(File zipFile) {
         BufferedOutputStream bos = null;
         try {
             ZipInputStream zis = new ZipInputStream(new FileInputStream(zipFile));
-            ZipEntry entry = null;
+            ZipEntry entry;
             while ((entry = zis.getNextEntry()) != null) {
-                if (entry.isDirectory()) {
-
-                } else {
+                if (!entry.isDirectory()) {
                     File target = new File(zipFile.getParent(), entry.getName());
                     if (!target.getParentFile().exists()) {
                         target.getParentFile().mkdirs();

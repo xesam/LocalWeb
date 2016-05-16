@@ -36,7 +36,7 @@ public class LocalWebService extends IntentService {
         if (LocalWebManager.DEBUG) {
             Log.d(TAG, "onCreate");
         }
-        mLocalWebCache = new LocalWebCache(this);
+        mLocalWebCache = new LocalWebCache();
     }
 
     @Override
@@ -94,8 +94,7 @@ public class LocalWebService extends IntentService {
     }
 
     protected Bundle syncUpdate(LocalWebResp resp) {
-        mLocalWebCache.syncUpdate(this, resp);
-        return null;
+        return mLocalWebCache.syncUpdate(this, resp);
     }
 
     protected void onUpdated(LocalWebParam param, Bundle responseReply) {
