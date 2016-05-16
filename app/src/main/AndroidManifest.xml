@@ -20,7 +20,12 @@
         </activity>
         <service
             android:name="dev.xesam.android.localweb.LocalWebService"
-            android:exported="false" />
+            android:exported="false">
+            <intent-filter>
+                <action android:name="localweb.action.start_process" />
+            </intent-filter>
+
+        </service>
     </application>
 
 </manifest>

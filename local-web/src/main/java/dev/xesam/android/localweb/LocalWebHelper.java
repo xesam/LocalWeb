@@ -9,6 +9,7 @@ import android.os.Bundle;
  */
 public class LocalWebHelper {
 
+    public static final String INTENT_ACTION_START_PROCESS = "localweb.action.start_process";
     public static final String INTENT_EXTRA_REQUEST = "localweb.extra.request";
     public static final String INTENT_EXTRA_RESPONSE_REPLY = "localweb.extra.response_reply";
 

@@ -38,7 +38,7 @@ public class LocalWebManager {
     }
 
     public void update(LocalWebParam request) {
-        Intent intent = new Intent(mContext, LocalWebService.class);
+        Intent intent = new Intent(LocalWebHelper.INTENT_ACTION_START_PROCESS);
         LocalWebHelper.putRequest(intent, request);
         mContext.startService(intent);
     }
