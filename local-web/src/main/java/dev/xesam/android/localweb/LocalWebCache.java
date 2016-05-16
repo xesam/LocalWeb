@@ -93,9 +93,9 @@ public class LocalWebCache {
                     }
                     bos = new BufferedOutputStream(new FileOutputStream(target));
                     int read;
-                    byte[] buffer2 = new byte[1024 * 10];
-                    while ((read = zis.read(buffer2, 0, buffer2.length)) != -1) {
-                        bos.write(buffer2, 0, read);
+                    byte[] buffer = new byte[1024 * 8];
+                    while ((read = zis.read(buffer, 0, buffer.length)) != -1) {
+                        bos.write(buffer, 0, read);
                     }
                     bos.flush();
                 }
