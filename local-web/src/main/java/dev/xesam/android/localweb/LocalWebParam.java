@@ -10,7 +10,6 @@ import java.util.HashMap;
  */
 public class LocalWebParam implements Parcelable {
 
-    private String mTag;
     private String mUrl;
     private HashMap<String, String> optional;
 
@@ -36,13 +35,11 @@ public class LocalWebParam implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.mTag);
         dest.writeString(this.mUrl);
         dest.writeSerializable(this.optional);
     }
 
     protected LocalWebParam(Parcel in) {
-        this.mTag = in.readString();
         this.mUrl = in.readString();
         this.optional = (HashMap<String, String>) in.readSerializable();
     }
