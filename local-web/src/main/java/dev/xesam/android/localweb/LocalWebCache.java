@@ -27,7 +27,7 @@ public class LocalWebCache {
     }
 
     private File getDestFile(Context context, LocalWebResp resp) {
-        return new File(getCacheDir(context), resp.tag + ".zip");
+        return new File(getCacheDir(context), resp.getTag() + ".zip");
     }
 
     public void scan(Context context) {
@@ -43,7 +43,7 @@ public class LocalWebCache {
         BufferedOutputStream bos = null;
         try {
             File dest = getDestFile(context, resp);
-            URL url = new URL(resp.url);
+            URL url = new URL(resp.getUrl());
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setConnectTimeout(CONNECT_TIME_OUT);
             conn.setReadTimeout(READ_TIME_OUT);

@@ -23,9 +23,7 @@ public class MockServer extends Thread {
         public MockResponse dispatch(RecordedRequest request) throws InterruptedException {
             final String path = request.getPath();
             if (path.equals(CHECK_UPDATE)) {
-                LocalWebResp localWebResp = new LocalWebResp();
-                localWebResp.tag = "v1";
-                localWebResp.url = "http://192.168.1.159/v1.zip";
+                LocalWebResp localWebResp = new LocalWebResp("v1", "http://192.168.1.159/v1.zip");
                 return new MockResponse().setResponseCode(200).setBody(new Gson().toJson(localWebResp));
             }
             return new MockResponse().setResponseCode(404);

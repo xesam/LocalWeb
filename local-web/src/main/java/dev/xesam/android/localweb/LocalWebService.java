@@ -63,9 +63,12 @@ public class LocalWebService extends IntentService {
         }
 
         LocalWebResp resp = checkUpdate(param);
+        if (resp == null) {
+            return;
+        }
 
-        mLocalWebCache.sync(this, resp);
-        onUpdated(param, new Bundle());
+        Bundle data = syncUpdate(resp);
+        onUpdated(param, data);
     }
 
     protected LocalWebResp checkUpdate(LocalWebParam param) {
@@ -82,14 +85,16 @@ public class LocalWebService extends IntentService {
                 stringBuilder.append(line);
             }
             JSONObject jsonObject = new JSONObject(stringBuilder.toString());
-            LocalWebResp resp = new LocalWebResp();
-            resp.tag = jsonObject.getString("tag");
-            resp.url = jsonObject.getString("url");
-            return resp;
+            return new LocalWebResp(jsonObject.getString("tag"), jsonObject.getString("url"));
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+        return null;
+    }
+
+    protected Bundle syncUpdate(LocalWebResp resp) {
+        mLocalWebCache.sync(this, resp);
         return null;
     }
 
