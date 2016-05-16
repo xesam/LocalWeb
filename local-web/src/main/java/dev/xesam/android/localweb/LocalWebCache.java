@@ -22,27 +22,33 @@ public class LocalWebCache {
     public static final int CONNECT_TIME_OUT = 30 * 1000;
     public static final int READ_TIME_OUT = 2 * 60 * 1000;
 
-    private File getCacheDir(Context context) {
-        return context.getExternalCacheDir();
+    private Context mContext;
+
+    public LocalWebCache(Context context) {
+        this.mContext = context.getApplicationContext();
     }
 
-    private File getDestFile(Context context, LocalWebResp resp) {
-        return new File(getCacheDir(context), resp.getTag() + ".zip");
+    File getCacheDir() {
+        return mContext.getExternalCacheDir();
     }
 
-    public void scan(Context context) {
-        File dir = getCacheDir(context);
+    private File getDestFile(LocalWebResp resp) {
+        return new File(getCacheDir(), resp.getTag() + ".zip");
+    }
+
+    public void scan() {
+        File dir = getCacheDir();
         String[] files = dir.list();
         for (String file : files) {
-            Log.e("LocalWebCache", String.valueOf(file));
+            Log.e("LocalWebCache scan", String.valueOf(file));
         }
     }
 
-    public void sync(Context context, LocalWebResp resp) {
+    public void syncUpdate(Context context, LocalWebResp resp) {
         BufferedInputStream bis = null;
         BufferedOutputStream bos = null;
         try {
-            File dest = getDestFile(context, resp);
+            File dest = getDestFile(resp);
             URL url = new URL(resp.getUrl());
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setConnectTimeout(CONNECT_TIME_OUT);
@@ -89,10 +95,8 @@ public class LocalWebCache {
                 } else {
                     File target = new File(zipFile.getParent(), entry.getName());
                     if (!target.getParentFile().exists()) {
-                        // 创建文件父目录
                         target.getParentFile().mkdirs();
                     }
-                    // 写入文件
                     bos = new BufferedOutputStream(new FileOutputStream(target));
                     int read;
                     byte[] buffer2 = new byte[1024 * 10];
