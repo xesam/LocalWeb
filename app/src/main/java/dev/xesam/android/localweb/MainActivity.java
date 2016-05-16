@@ -32,11 +32,15 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    MockServer mockServer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        mockServer = new MockServer();
+        mockServer.startServer();
         LocalWebManager.init(this);
         LocalWebManager.DEBUG = true;
         localWebReceiver.register(this);
@@ -45,19 +49,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mockServer.stopServer();
         localWebReceiver.unregister(this);
-    }
-
-    private LocalWebParam createRequest() {
-        LocalWebParam request = new LocalWebParam();
-        request.setVersion("v1");
-        request.setUrl("http://192.168.1.159/v1.zip");
-        return request;
     }
 
     @OnClick(R.id.update)
     public void update() {
-        LocalWebManager.getInstance().update(createRequest());
+        LocalWebParam request = new LocalWebParam();
+        request.setUrl(mockServer.getCheckUpdateUrl());
+        LocalWebManager.getInstance().update(request);
     }
 
     @OnClick(R.id.load)

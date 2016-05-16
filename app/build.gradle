@@ -22,10 +22,11 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.3.0'
+    compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.jakewharton:butterknife:8.0.1'
     apt 'com.jakewharton:butterknife-compiler:8.0.1'
     compile project(':local-web')
     compile project(':local-web-interceptor')
+    compile 'com.squareup.okhttp3:mockwebserver:3.2.0'
+    compile 'com.google.code.gson:gson:2.4'
 }

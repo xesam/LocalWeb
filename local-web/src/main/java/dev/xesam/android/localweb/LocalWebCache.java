@@ -26,8 +26,8 @@ public class LocalWebCache {
         return context.getExternalCacheDir();
     }
 
-    private File getDestFile(Context context, LocalWebParam request) {
-        return new File(getCacheDir(context), request.getTag() + ".zip");
+    private File getDestFile(Context context, LocalWebResp resp) {
+        return new File(getCacheDir(context), resp.tag + ".zip");
     }
 
     public void scan(Context context) {
@@ -38,12 +38,12 @@ public class LocalWebCache {
         }
     }
 
-    public void sync(Context context, LocalWebParam request) {
+    public void sync(Context context, LocalWebResp resp) {
         BufferedInputStream bis = null;
         BufferedOutputStream bos = null;
         try {
-            File dest = getDestFile(context, request);
-            URL url = new URL(request.getUrl());
+            File dest = getDestFile(context, resp);
+            URL url = new URL(resp.url);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setConnectTimeout(CONNECT_TIME_OUT);
             conn.setReadTimeout(READ_TIME_OUT);
@@ -57,7 +57,7 @@ public class LocalWebCache {
             }
             bis.close();
             bos.close();
-            process(context, request, new File(dest.getAbsolutePath()));
+            process(context, resp, new File(dest.getAbsolutePath()));
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -78,7 +78,7 @@ public class LocalWebCache {
         }
     }
 
-    public void process(Context context, LocalWebParam request, File zipFile) {
+    public void process(Context context, LocalWebResp resp, File zipFile) {
         BufferedOutputStream bos = null;
         try {
             ZipInputStream zis = new ZipInputStream(new FileInputStream(zipFile));
@@ -105,7 +105,7 @@ public class LocalWebCache {
             zis.closeEntry();
         } catch (Exception e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             if (bos != null) {
                 try {
                     bos.close();

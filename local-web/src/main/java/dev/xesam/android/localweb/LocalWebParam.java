@@ -17,20 +17,16 @@ public class LocalWebParam implements Parcelable {
     public LocalWebParam() {
     }
 
-    public String getTag() {
-        return mTag;
-    }
-
-    public void setVersion(String tag) {
-        this.mTag = tag;
-    }
-
     public String getUrl() {
         return mUrl;
     }
 
     public void setUrl(String url) {
         this.mUrl = url;
+    }
+
+    public void put(String key, String value) {
+        optional.put(key, value);
     }
 
     @Override

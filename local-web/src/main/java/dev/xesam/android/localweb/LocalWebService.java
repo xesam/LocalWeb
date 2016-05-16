@@ -6,6 +6,13 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 /**
  * Created by xesamguo@gmail.com on 16-5-9.
  */
@@ -46,24 +53,47 @@ public class LocalWebService extends IntentService {
         }
     }
 
-    protected void onHandleRequest(LocalWebParam request) {
+    protected void onHandleRequest(LocalWebParam param) {
         if (LocalWebManager.DEBUG) {
-            Log.d(TAG, "handle intent:" + (request == null ? "null" : (request.getTag() + ":" + request.getUrl())));
+            Log.d(TAG, "handle intent:" + (param == null ? "null" : param.toString()));
         }
 
-        if (request == null) {
+        if (param == null) {
             return;
         }
 
-        mLocalWebCache.sync(this, request);
-        onUpdated(request, new Bundle());
+        LocalWebResp resp = checkUpdate(param);
+
+        mLocalWebCache.sync(this, resp);
+        onUpdated(param, new Bundle());
     }
 
-    protected void checkUpdate() {
+    protected LocalWebResp checkUpdate(LocalWebParam param) {
+        try {
+            URL url = new URL(param.getUrl());
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setConnectTimeout(5000);
+            conn.setReadTimeout(10000);
+            conn.connect();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            StringBuilder stringBuilder = new StringBuilder();
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                stringBuilder.append(line);
+            }
+            JSONObject jsonObject = new JSONObject(stringBuilder.toString());
+            LocalWebResp resp = new LocalWebResp();
+            resp.tag = jsonObject.getString("tag");
+            resp.url = jsonObject.getString("url");
+            return resp;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
+        return null;
     }
 
-    protected void onUpdated(LocalWebParam request, Bundle responseReply) {
-        LocalWebHelper.broadcastUpdated(this, request, responseReply);
+    protected void onUpdated(LocalWebParam param, Bundle responseReply) {
+        LocalWebHelper.broadcastUpdated(this, param, responseReply);
     }
 }
